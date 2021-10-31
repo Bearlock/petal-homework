@@ -1,1 +1,7 @@
+## Versioned deps
 Flask==2.0.2
+
+## Not Versioned deps
+requests
+requests_mock
+pytest
