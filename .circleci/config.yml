@@ -15,8 +15,11 @@ jobs:
       - run:
           name: Run tests
           command: python -m pytest tests
-  build-and-push-image:
-    steps:
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - run-tests
       - aws-ecr/build-and-push-image:
           account-url: ${AWS_ECR_ACCOUNT_URL}
           aws-access-key-id: ${ACCESS_KEY_ID}
@@ -25,11 +28,5 @@ jobs:
           repo: petal-homework
           skip-when-tags-exist: false
           tag: 'latest,prod'
-
-workflows:
-  build-and-deploy:
-    jobs:
-      - run-tests
-      - build_and_push_image:
-        requires:
-          - run-tests
+          requires:
+            - run-tests
