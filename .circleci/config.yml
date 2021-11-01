@@ -21,9 +21,9 @@ workflows:
     jobs:
       - run-tests
       - aws-ecr/build-and-push-image:
-          account-url: ${AWS_ECR_ACCOUNT_URL}
-          aws-access-key-id: ${ACCESS_KEY_ID}
-          aws-secret-access-key: ${SECRET_ACCESS_KEY}
+          account-url: AWS_ECR_ACCOUNT_URL
+          aws-access-key-id: ACCESS_KEY_ID
+          aws-secret-access-key: SECRET_ACCESS_KEY
           checkout: true
           repo: petal-homework
           skip-when-tags-exist: false
