@@ -16,7 +16,8 @@ jobs:
           name: Run tests
           command: python -m pytest tests
   build-and-push-image:
-    - aws-ecr/build-and-push-image:
+    steps:
+      - aws-ecr/build-and-push-image:
           account-url: ${AWS_ECR_ACCOUNT_URL}
           aws-access-key-id: ${ACCESS_KEY_ID}
           aws-secret-access-key: ${SECRET_ACCESS_KEY}
@@ -29,6 +30,6 @@ workflows:
   build-and-deploy:
     jobs:
       - run-tests
-      - build-container:
+      - build_and_push_image:
         requires:
           - run-tests
