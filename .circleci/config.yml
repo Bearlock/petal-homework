@@ -2,9 +2,10 @@ version: 2.1
 
 orbs:
   python: circleci/python@1.2
+  aws-ecr: circleci/aws-ecr@7.2.0
 
 jobs:
-  build-and-test:
+  run-tests:
     docker:
       - image: cimg/python:3.8
     steps:
@@ -14,9 +15,20 @@ jobs:
       - run:
           name: Run tests
           command: python -m pytest tests
-#  build-container:
+  build-and-push-image:
+    - aws-ecr/build-and-push-image:
+          account-url: ${AWS_ECR_ACCOUNT_URL}
+          aws-access-key-id: ${ACCESS_KEY_ID}
+          aws-secret-access-key: ${SECRET_ACCESS_KEY}
+          checkout: true
+          repo: petal-homework
+          skip-when-tags-exist: false
+          tag: 'latest,prod'
+
 workflows:
   build-and-deploy:
     jobs:
-      - build-and-test
-#      - build-container
+      - run-tests
+      - build-container:
+        requires:
+          - run-tests
